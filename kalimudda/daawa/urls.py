@@ -13,5 +13,7 @@ urlpatterns = [
     path('issue_item/<str:pk>',views.issue_item, name = 'issue_item'),   
     path('add_to_stock/<str:pk>',views.add_to_stock, name = 'add_to_stock'), 
     #this handles the receipt after successful sales
-    path('receipt/',views.receipt, name = 'receipt')
+    path('receipt/',views.receipt, name = 'receipt'),#handle a reciept after a successful sale
+    #this handles the sales 
+    path('all_sales/',views.all_sales, name = 'all_sales')
 ]

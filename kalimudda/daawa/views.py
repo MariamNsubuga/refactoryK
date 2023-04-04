@@ -68,5 +68,34 @@ def receipt(request):
 
 @login_required
 def add_to_stock(request, pk):
-    pass
+    issued_item = Product.objects.get(id=pk)
+    form = AddForm(request.POST)
+    if request.method == "POST":
+        if form.is_valid():
+            add_quantity = int(request.POST['received_quantity']) #issuied_quantity
+            issued_item.total_quantity += add_quantity
+            issued_item.save()
+            
+            # to add to the remaining stock quantity has to reduce
+            print(add_quantity)
+            print(issued_item.total_quantity)
+            return redirect('index')
 
+    return render(request,'products/add_to_stock.html',{'form':form})
+
+
+#this handles sales request 
+#view is a function in django, method is a function in OOP
+def all_sales(request):
+    sales = Sale.objects.all()
+    total = sum([items.amount_received for items in sales])
+    change = sum([items.get_change() for items in sales])
+    net = total - change
+    return render(request,'products/all_sales.html',
+                  {'sales':sales,
+                   'total':total,
+                   'change':change, 
+                   'net':net,
+                     })
+
+     
